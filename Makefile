@@ -218,7 +218,7 @@ run_optimizer:
 		fi; \
 	fi; \
 	echo ""; \
-	$(PYTHON) dcp_optimizer.py "$(DCP)" --sweep
+	$(PYTHON) -c 'import pty, sys; pty.spawn([sys.executable, "dcp_optimizer.py", "$(DCP)", "--sweep"])'
 
 # Validation target: Validate functional equivalence between two DCPs
 validate:
