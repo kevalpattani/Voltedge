@@ -38,7 +38,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Default model
-DEFAULT_MODEL = "x-ai/grok-4.1-fast"
+DEFAULT_MODEL = "google/gemini-3.5-flash"
 
 
 def parse_timing_summary_static(timing_report: str) -> dict:
@@ -917,7 +917,7 @@ class DCPOptimizer(DCPOptimizerBase):
                 messages=self.messages,
                 tools=self.tools,
                 tool_choice="auto",
-                max_tokens=4096,
+                max_tokens=16384,
                 extra_body={
                     "usage": {
                         "include": True
@@ -1210,7 +1210,7 @@ class DCPOptimizer(DCPOptimizerBase):
             hold_vios = hold_data["global"].get("num_violations", 0)
 
             # --- TIMING CLIFF BAILOUT ---
-            if setup_vios > 50 or hold_vios > 50 or (wns is not None and wns < -0.500):
+            if setup_vios > 5000 or hold_vios > 5000 or (wns is not None and wns < -3.000):
                 logger.error(f"🛑 TIMING CLIFF DETECTED. Setup Vios: {setup_vios}, Hold Vios: {hold_vios}, WNS: {wns}")
                 print(f"\n[ABORT] The design has critically fractured. Too many violations to fix.")
                 return False
